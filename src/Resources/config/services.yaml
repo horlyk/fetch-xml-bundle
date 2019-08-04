@@ -1,0 +1,12 @@
+services:
+  # Factory
+  Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactory: ~
+
+  Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactoryInterface: '@Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactory'
+
+  # Builder
+  Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilder:
+    factory: ['@Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactory', 'createBuilder']
+
+  Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilderInterface: '@Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilder'
+
