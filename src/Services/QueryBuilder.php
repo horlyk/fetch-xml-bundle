@@ -27,27 +27,27 @@ class QueryBuilder implements QueryBuilderInterface
     /**
      * @var bool
      */
-    private $usePager = false;
+    private $usePager;
 
     /**
      * @var int
      */
-    private $currentPage = 1;
+    private $currentPage;
 
     /**
      * @var int
      */
-    private $itemsPerPage = 10;
+    private $itemsPerPage;
 
     /**
      * @var bool
      */
-    private $attributeAliasesAsNames = true;
+    private $attributeAliasesAsNames;
 
     /**
      * @var string
      */
-    private $attributeAliasPrefix = 'qb_';
+    private $attributeAliasPrefix;
 
     /**
      * @var array|Attribute[]|null
@@ -77,6 +77,7 @@ class QueryBuilder implements QueryBuilderInterface
     public function getQueryData(): array
     {
         return [
+            'entity' => $this->entity,
             'itemsPerPage' => $this->itemsPerPage,
             'currentPage' => $this->currentPage,
         ];
@@ -118,7 +119,7 @@ class QueryBuilder implements QueryBuilderInterface
     /**
      * @param string|Attribute|null $attribute
      */
-    public function getCountQuery(?$attribute = null): string
+    public function getCountQuery($attribute = null): string
     {
         $fetch = $this->queryDom->appendChild($this->createDomElement('fetch', [
             'mapping' => 'logical',
