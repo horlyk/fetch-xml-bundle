@@ -1,6 +1,11 @@
 services:
   # Factory
-  Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactory: ~
+  Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactory:
+    arguments:
+      - "%horlyk_fetch_xml.use_pager%"
+      - "%horlyk_fetch_xml.items_per_page%"
+      - "%horlyk_fetch_xml.attribute_aliases_as_names%"
+      - "%horlyk_fetch_xml.attribute_alias_prefix%"
 
   Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactoryInterface: '@Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactory'
 

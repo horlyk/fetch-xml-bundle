@@ -10,7 +10,7 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('horlyk_fetchxml');
+        $treeBuilder = new TreeBuilder('horlyk_fetch_xml');
 
         $treeBuilder->getRootNode()
             ->children()
