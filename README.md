@@ -12,9 +12,9 @@ composer require horlyk/fetch-xml-bundle
 Documentation
 -------------
 
-* [Getting started](src/Resources/doc/index.md)
-* [Configuration](src/Resources/doc/configuration.md)
-* [Examples](src/Resources/doc/examples.md)
+* [Getting started](/src/Resources/doc/index.md)
+* [Configuration](/src/Resources/doc/configuration.md)
+* [Examples](/src/Resources/doc/examples.md)
 
 License
 -------

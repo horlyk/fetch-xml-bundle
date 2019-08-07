@@ -7,7 +7,7 @@ horlyk_fetch_xml:
     use_pager: false
     items_per_page: 10
     attribute_aliases_as_names: true
-    attribute_alias_prefix: 'ep_'
+    attribute_alias_prefix: 'qb_'
 ```
 
 * ```use_pager``` - allows you to build paginated output.
@@ -24,6 +24,6 @@ This can be useful when you have a lot of relations where the needed field name 
 Documentation navigation
 -------------
 
-* [Readme](src/README.md)
-* [Getting started](src/Resources/doc/index.md)
-* [Examples](src/Resources/doc/examples.md)
+* [Readme](/src/README.md)
+* [Getting started](/src/Resources/doc/index.md)
+* [Examples](/src/Resources/doc/examples.md)
