@@ -1,7 +1,6 @@
 {
     "name": "horlyk/fetch-xml-bundle",
     "description": "This bundle provides a flexible and convenient tool for building fetchXml queries.",
-    "version": "1.0.0",
     "type": "symfony-bundle",
     "license": "MIT",
     "autoload": {
