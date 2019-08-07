@@ -6,6 +6,7 @@
          colors="true"
          failOnRisky="true"
          failOnWarning="true"
+         bootstrap="vendor/autoload.php"
 >
     <php>
         <ini name="error_reporting" value="-1" />
