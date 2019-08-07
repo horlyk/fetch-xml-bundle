@@ -30,6 +30,6 @@ public function helloAction(QueryBuilderFactoryInterface $queryBuilderFactory)
 Documentation navigation
 -------------
 
-* [Readme](/src/README.md)
+* [Readme](/README.md)
 * [Configuration](/src/Resources/doc/configuration.md)
 * [Examples](/src/Resources/doc/examples.md)

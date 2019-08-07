@@ -24,6 +24,6 @@ This can be useful when you have a lot of relations where the needed field name 
 Documentation navigation
 -------------
 
-* [Readme](/src/README.md)
+* [Readme](/README.md)
 * [Getting started](/src/Resources/doc/index.md)
 * [Examples](/src/Resources/doc/examples.md)
