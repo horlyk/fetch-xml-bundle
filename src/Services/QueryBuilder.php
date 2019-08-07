@@ -2,6 +2,7 @@
 
 namespace Horlyk\Bundle\FetchXmlBundle\Services;
 
+use Horlyk\Bundle\FetchXmlBundle\Exception\QueryBuilderException;
 use Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilderObject\Attribute;
 use Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilderObject\Filter;
 use Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilderObject\Relation;
@@ -86,6 +87,10 @@ class QueryBuilder implements QueryBuilderInterface
     public function getQuery(?bool $dump = false): string
     {
         $fetchParameters = [];
+
+        if (!$this->entity) {
+            throw new QueryBuilderException('Entity name was not provided.');
+        }
 
         if ($this->usePager) {
             $fetchParameters = [
