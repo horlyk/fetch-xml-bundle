@@ -16,12 +16,8 @@ matrix:
     # Minimum supported dependencies with the latest and oldest PHP version
     - php: 7.2
       env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
-    - php: 7.0
-      env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
 
       # Test the latest stable release
-    - php: 7.0
-    - php: 7.1
     - php: 7.2
       env: COVERAGE=true PHPUNIT_FLAGS="-v --coverage-text"
 
@@ -55,4 +51,4 @@ script:
   - composer validate --strict --no-check-lock
   # simple-phpunit is the PHPUnit wrapper provided by the PHPUnit Bridge component and
   # it helps with testing legacy code and deprecations (composer require symfony/phpunit-bridge)
-  - ./vendor/bin/phpunit $PHPUNIT_FLAGS
+  - ./vendor/bin/simple-phpunit $PHPUNIT_FLAGS
