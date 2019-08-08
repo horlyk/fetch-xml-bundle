@@ -20,6 +20,7 @@
         "symfony/phpunit-bridge": "^4.3",
         "symfony/dependency-injection": "^4.3",
         "symfony/config": "^4.3",
-        "symfony/yaml": "^4.3"
+        "symfony/yaml": "^4.3",
+        "friendsofphp/php-cs-fixer": "^2.15"
     }
 }
