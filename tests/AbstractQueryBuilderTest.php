@@ -20,7 +20,6 @@ abstract class AbstractQueryBuilderTest extends TestCase
 
     protected function getQueryBuilder()
     {
-
         return $this->queryBuilderFactory->createBuilder()
             ->setEntity('user')
         ;

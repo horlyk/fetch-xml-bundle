@@ -106,10 +106,9 @@ class RelationTest extends AbstractQueryBuilderTest
         $this->assertEquals('<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><order attribute="city" descending="false"/><order attribute="zip" descending="true"/></link-entity><all-attributes/></entity></fetch>',
             $queryBuilder->getQuery());
 
-        $relation->setFilters([]);
+        $relation->setSorts([]);
 
-
-        $this->assertEquals([], $relation->getFilters());
+        $this->assertEquals([], $relation->getSorts());
     }
 
     public function testRelationRelations()
@@ -126,7 +125,6 @@ class RelationTest extends AbstractQueryBuilderTest
 
         $this->assertEquals('<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><link-entity name="type" to="address" from="address_id"/></link-entity><all-attributes/></entity></fetch>',
             $queryBuilder->getQuery());
-
 
         $relation->setRelations([]);
         $this->assertEquals([], $relation->getRelations());

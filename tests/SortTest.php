@@ -13,7 +13,7 @@ class SortTest extends AbstractQueryBuilderTest
         $data = [
             new Sort('name'),
             new Sort('age', 'asc'),
-            new Sort('salary', 'desc')
+            new Sort('salary', 'desc'),
         ];
 
         $queryBuilder->addSortOrder($data[0]);

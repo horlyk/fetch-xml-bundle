@@ -29,9 +29,11 @@ class Filter
         return $this->attribute;
     }
 
-    public function setAttribute(string $attribute): void
+    public function setAttribute(string $attribute): self
     {
         $this->attribute = $attribute;
+
+        return $this;
     }
 
     public function getOperator(): string
@@ -39,9 +41,11 @@ class Filter
         return $this->operator;
     }
 
-    public function setOperator(string $operator): void
+    public function setOperator(string $operator): self
     {
         $this->operator = $operator;
+
+        return $this;
     }
 
     public function getValue(): string
@@ -49,8 +53,10 @@ class Filter
         return $this->value;
     }
 
-    public function setValue(string $value): void
+    public function setValue(string $value): self
     {
         $this->value = $value;
+
+        return $this;
     }
 }

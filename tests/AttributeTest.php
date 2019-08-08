@@ -30,7 +30,7 @@ class AttributeTest extends AbstractQueryBuilderTest
             $queryBuilder->getQuery()
         );
 
-        $queryBuilder->setAttributes(['firstName', (new Attribute('age'))->setAlias('al') , 'lastName']);
+        $queryBuilder->setAttributes(['firstName', (new Attribute('age'))->setAlias('al'), 'lastName']);
         $this->assertEquals(
             '<fetch><entity name="user"><attribute name="firstName" alias="test_firstName"/><attribute name="age" alias="test_al"/><attribute name="lastName" alias="test_lastName"/></entity></fetch>',
             $queryBuilder->getQuery()
@@ -42,7 +42,7 @@ class AttributeTest extends AbstractQueryBuilderTest
                 ->setAlias('al')
                 ->setAggregate('count')
                 ->setDistinct(true),
-            'lastName'
+            'lastName',
         ]);
         $this->assertEquals(
             '<fetch><entity name="user"><attribute name="firstName" alias="test_firstName"/><attribute name="age" alias="test_al" aggregate="count" distinct="true"/><attribute name="lastName" alias="test_lastName"/></entity></fetch>',
@@ -51,10 +51,12 @@ class AttributeTest extends AbstractQueryBuilderTest
 
         $queryBuilder->setAttributes([
             (new Attribute('age'))
+                ->setName('name')
                 ->setDistinct(false),
         ]);
+
         $this->assertEquals(
-            '<fetch><entity name="user"><attribute name="age" alias="test_age" distinct="false"/></entity></fetch>',
+            '<fetch><entity name="user"><attribute name="name" alias="test_name" distinct="false"/></entity></fetch>',
             $queryBuilder->getQuery()
         );
 
@@ -62,5 +64,7 @@ class AttributeTest extends AbstractQueryBuilderTest
             ->setAttributes(['firstName', 'lastName'])
             ->setAttributeAliasesAsNames(false);
         $this->assertEquals('<fetch><entity name="user"><attribute name="firstName"/><attribute name="lastName"/></entity></fetch>', $queryBuilder->getQuery());
+
+        $this->assertEquals(['firstName', 'lastName'], $queryBuilder->getAttributes());
     }
 }
