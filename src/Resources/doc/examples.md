@@ -26,27 +26,19 @@ $contactQueryBuilder
     ->addFilter(new Filter('field_1', $fieldValue))
     ->addSortOrder((new Sort('field_3')))
     ->addRelation(
-        (new Relation())
-            ->setEntityName('entity_name')
-            ->setCurrentEntityField('from')
-            ->setRelationEntityField('to')
+        (new Relation('entity_name', 'to', 'from'))
             ->setAttributes([
                 'field_1', 'field_2', 'field_3',
             ])
             ->addSortOrder((new Sort('field_2', 'desc')))
+            ->addFilter(new Filter('field_3', $fieldValue))
     )
     ->addRelation(
-        (new Relation())
-            ->setEntityName('entity_name')
-            ->setCurrentEntityField('from')
-            ->setRelationEntityField('to')
+        (new Relation('entity_name', 'to', 'from'))
             ->setAttributes(['field_1', 'field_2'])
             ->setJoinType('outer')
             ->addRelation(
-                (new Relation())
-                    ->setEntityName('entity_name')
-                    ->setCurrentEntityField('from')
-                    ->setRelationEntityField('to')
+                (new Relation('entity_name', 'to', 'from'))
             )
     );
 ```
