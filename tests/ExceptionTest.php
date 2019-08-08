@@ -3,25 +3,41 @@
 namespace Horlyk\Test;
 
 use Horlyk\Bundle\FetchXmlBundle\Exception\QueryBuilderException;
-use Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactory;
-use Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactoryInterface;
-use PHPUnit\Framework\TestCase;
+use Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilderObject\Attribute;
 
-class ExceptionTest extends TestCase
+class ExceptionTest extends AbstractQueryBuilderTest
 {
-    /**
-     * @var QueryBuilderFactoryInterface
-     */
-    protected $queryBuilderFactory;
-
-    protected function setUp(): void
-    {
-        $this->queryBuilderFactory = new QueryBuilderFactory();
-    }
-
     public function testEntityNameNotGiven()
     {
         $queryBuilder = $this->queryBuilderFactory->createBuilder();
+
+        $this->expectException(QueryBuilderException::class);
+
+        $queryBuilder->getQuery();
+    }
+
+    public function testEmptyAliasPrefix()
+    {
+        $queryBuilder = $this->queryBuilderFactory->createBuilder();
+
+        $queryBuilder
+            ->setEntity('user')
+            ->setAttributes([])
+            ->setAttributeAliasPrefix('');
+
+        $this->expectException(QueryBuilderException::class);
+
+        $queryBuilder->getQuery();
+    }
+
+    public function testEmptyAlias()
+    {
+        $queryBuilder = $this->queryBuilderFactory->createBuilder();
+
+        $queryBuilder
+            ->setEntity('user')
+            ->setAttributes([(new Attribute('name'))->setAlias('')])
+        ;
 
         $this->expectException(QueryBuilderException::class);
 

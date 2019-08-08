@@ -14,7 +14,7 @@ class Sort
      */
     private $direction;
 
-    public function __construct(string $field, ?string $direction)
+    public function __construct(string $field, ?string $direction = 'asc')
     {
         $this->setField($field);
         $this->setDirection($direction ?: 'asc');

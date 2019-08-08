@@ -25,7 +25,7 @@ class Relation
     private $joinType;
 
     /**
-     * @var string|null
+     * @var bool|null
      */
     private $intersect;
 
@@ -49,6 +49,17 @@ class Relation
      */
     private $filters = [];
 
+    /**
+     * @deprecated v.1.0.1 $entityName no longer supports nullable value
+     * @deprecated v.1.0.1 $to no longer supports nullable value
+     */
+    public function __construct(?string $entityName = null, ?string $relationEntityField = null, ?string $currentEntityField = null)
+    {
+        $this->entityName = $entityName;
+        $this->currentEntityField = $currentEntityField;
+        $this->relationEntityField = $relationEntityField;
+    }
+
     public function getEntityName(): string
     {
         return $this->entityName;
@@ -61,7 +72,7 @@ class Relation
         return $this;
     }
 
-    public function getCurrentEntityField(): string
+    public function getCurrentEntityField(): ?string
     {
         return $this->currentEntityField;
     }
@@ -166,12 +177,12 @@ class Relation
         return $this;
     }
 
-    public function getIntersect(): ?string
+    public function getIntersect(): ?bool
     {
         return $this->intersect;
     }
 
-    public function setIntersect(string $intersect): self
+    public function setIntersect(bool $intersect): self
     {
         $this->intersect = $intersect;
 

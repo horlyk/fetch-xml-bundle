@@ -133,7 +133,6 @@ class QueryBuilder implements QueryBuilderInterface
 
         $entity = $fetch->appendChild($this->createDomElement('entity', [
             'name' => $this->entity,
-            'page' => $this->currentPage,
         ]));
 
         if (null === $attribute) {
@@ -196,16 +195,19 @@ class QueryBuilder implements QueryBuilderInterface
     {
         $joinParameters = [
             'name' => $relation->getEntityName(),
-            'from' => $relation->getCurrentEntityField(),
             'to' => $relation->getRelationEntityField(),
         ];
+
+        if ($relation->getCurrentEntityField()) {
+            $joinParameters['from'] = $relation->getCurrentEntityField();
+        }
 
         if (null !== $relation->getJoinType()) {
             $joinParameters['link-type'] = $relation->getJoinType();
         }
 
         if (null !== $relation->getIntersect()) {
-            $joinParameters['intersect'] = $relation->getIntersect() ? 'true' : 'false';
+            $joinParameters['intersect'] = $this->boolToString($relation->getIntersect());
         }
 
         $linkedRelation = $element->appendChild($this->createDomElement('link-entity', $joinParameters));
@@ -222,6 +224,10 @@ class QueryBuilder implements QueryBuilderInterface
             $entity->appendChild($this->queryDom->createElement('all-attributes'));
 
             return;
+        }
+
+        if ($this->attributeAliasesAsNames && !$this->attributeAliasPrefix) {
+            throw new QueryBuilderException('It is not allowed to use empty attribute alias prefix with attribute_aliases_as_names option set to true');
         }
 
         foreach ($attributes as $attribute) {
@@ -243,15 +249,22 @@ class QueryBuilder implements QueryBuilderInterface
         $parameters['name'] = $attribute->getName();
 
         if (null !== $attribute->getAlias()) {
+            if (!$attribute->getAlias()) {
+                throw new QueryBuilderException('Alias value must be a string.');
+            }
+
             $parameters['alias'] = $attribute->getAlias();
         }
 
         if (null !== $attribute->getAggregate()) {
-            $parameters['aggregate'] = $attribute->getAlias();
+            if (!$attribute->getAggregate()) {
+                throw new QueryBuilderException('Aggregate value must be a string.');
+            }
+            $parameters['aggregate'] = $attribute->getAggregate();
         }
 
         if (null !== $attribute->getDistinct()) {
-            $parameters['distinct'] = $attribute->getDistinct();
+            $parameters['distinct'] = $this->boolToString($attribute->getDistinct());
         }
 
         $entity->appendChild($this->createDomElement('attribute', $parameters));
@@ -268,7 +281,7 @@ class QueryBuilder implements QueryBuilderInterface
     {
         $element->appendChild($this->createDomElement('order', [
             'attribute' => $sortOrder->getField(),
-            'descending' => 'desc' === $sortOrder->getDirection() ? 'true' : 'false',
+            'descending' => $this->boolToString('desc' === $sortOrder->getDirection()),
         ]));
     }
 
@@ -277,6 +290,11 @@ class QueryBuilder implements QueryBuilderInterface
         $this->entity = $entity;
 
         return $this;
+    }
+
+    public function getAttributes(): ?array
+    {
+        return $this->attributes;
     }
 
     public function setAttributes(?array $attributes): self
@@ -307,6 +325,18 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    public function getFilters(): array
+    {
+        return $this->filters;
+    }
+
+    public function setFilters(array $filters): self
+    {
+        $this->filters = $filters;
+
+        return $this;
+    }
+
     public function addFilter(Filter $filter): self
     {
         $this->filters[] = $filter;
@@ -314,9 +344,33 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    public function getRelations(): array
+    {
+        return $this->relations;
+    }
+
+    public function setRelations(array $relations): self
+    {
+        $this->relations = $relations;
+
+        return $this;
+    }
+
     public function addRelation(Relation $relation): self
     {
         $this->relations[] = $relation;
+
+        return $this;
+    }
+
+    public function getSortOrders(): array
+    {
+        return $this->sorts;
+    }
+
+    public function setSortOrders(array $sorts): self
+    {
+        $this->sorts = $sorts;
 
         return $this;
     }
@@ -351,5 +405,10 @@ class QueryBuilder implements QueryBuilderInterface
         $this->attributeAliasPrefix = $attributeAliasPrefix;
 
         return $this;
+    }
+
+    private function boolToString(bool $value)
+    {
+        return $value ? 'true' : 'false';
     }
 }
