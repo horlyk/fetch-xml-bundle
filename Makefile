@@ -1,5 +1,5 @@
 phpunit:
-	./vendor/bin/simple-phpunit
+	./vendor/bin/simple-phpunit -v
 
 phpunit-code-coverage-html:
 	./vendor/bin/simple-phpunit --coverage-html code-coverage-result/

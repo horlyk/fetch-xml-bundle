@@ -84,7 +84,7 @@ class QueryBuilder implements QueryBuilderInterface
         ];
     }
 
-    public function getQuery(?bool $dump = false): string
+    public function getQuery(): string
     {
         $fetchParameters = [];
 
@@ -109,14 +109,6 @@ class QueryBuilder implements QueryBuilderInterface
 
         $this->applyCommon($entity);
         $this->applyAttributes($this->attributes, $entity);
-
-        if ($dump) {
-            if (function_exists('dump')) {
-                dump($this->queryDom->saveXML($fetch));
-            } else {
-                var_dump($this->queryDom->saveXML($fetch));
-            }
-        }
 
         return $this->queryDom->saveXML($fetch);
     }
