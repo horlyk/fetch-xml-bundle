@@ -13,11 +13,21 @@ class Filter
      */
     private $operator = 'eq';
     /**
-     * @var string
+     * @var string|array
      */
     private $value;
 
-    public function __construct(string $attribute, string $value, ?string $operator = null)
+    /**
+     * @var string|null
+     *
+     * ToDo allow adding filter type
+     */
+    private $type;
+
+    /**
+     * @param string|array $value
+     */
+    public function __construct(string $attribute, $value, ?string $operator = null)
     {
         $this->attribute = $attribute;
         $this->value = $value;
@@ -48,14 +58,32 @@ class Filter
         return $this;
     }
 
-    public function getValue(): string
+    /**
+     * @return array|string
+     */
+    public function getValue()
     {
         return $this->value;
     }
 
-    public function setValue(string $value): self
+    /**
+     * @param array|string $value
+     */
+    public function setValue($value): self
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

@@ -35,6 +35,19 @@ class FilterTest extends AbstractQueryBuilderTest
             ->setValue(12);
 
         $queryBuilder->addFilter($filter);
-        $this->assertEquals('<fetch><entity name="user"><filter><condition attribute="age" operator="gt" value="12"/></filter><all-attributes/></entity></fetch>', $queryBuilder->getQuery());
+        $this->assertEquals('<fetch><entity name="user"><filter><condition attribute="age" operator="gt" value="12"/></filter><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery());
+
+        $queryBuilder->setFilters([]);
+        $filter = new Filter('name', ['Bob', 'John'], 'in');
+
+        $queryBuilder->addFilter($filter);
+
+        $this->assertEquals('<fetch><entity name="user"><filter><condition attribute="name" operator="in"><value>Bob</value><value>John</value></condition></filter><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery());
+
+        $filter->setType('or');
+
+        $this->assertEquals('or', $filter->getType());
     }
 }

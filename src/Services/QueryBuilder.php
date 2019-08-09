@@ -169,11 +169,23 @@ class QueryBuilder implements QueryBuilderInterface
 
     private function applyFilter(Filter $filter, DOMNode $element): void
     {
-        $element->appendChild($this->createDomElement('condition', [
+        $filterData = [
             'attribute' => $filter->getAttribute(),
             'operator' => $filter->getOperator(),
-            'value' => $filter->getValue(),
-        ]));
+        ];
+
+        if (!is_array($filter->getValue())) {
+            $filterData['value'] = $filter->getValue();
+        }
+
+        $condition = $element->appendChild($this->createDomElement('condition', $filterData));
+
+        if (is_array($filter->getValue())) {
+            foreach ($filter->getValue() as $item) {
+                $value = $condition->appendChild($this->createDomElement('value'));
+                $value->nodeValue = $item;
+            }
+        }
     }
 
     private function applyRelations(array $relations, DOMNode $entity): void
