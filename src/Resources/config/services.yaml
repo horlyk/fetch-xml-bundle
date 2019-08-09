@@ -1,6 +1,7 @@
 services:
   # Factory
   Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactory:
+    class: Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactory
     arguments:
       - "%horlyk_fetch_xml.use_pager%"
       - "%horlyk_fetch_xml.items_per_page%"
@@ -11,6 +12,7 @@ services:
 
   # Builder
   Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilder:
+    class: Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilder
     factory: ['@Horlyk\Bundle\FetchXmlBundle\Services\Factory\QueryBuilderFactory', 'createBuilder']
 
   Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilderInterface: '@Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilder'

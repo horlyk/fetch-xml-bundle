@@ -10,9 +10,9 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('horlyk_fetch_xml');
+        $treeBuilder = new TreeBuilder();
 
-        $treeBuilder->getRootNode()
+        $treeBuilder->root('horlyk_fetch_xml')
             ->children()
                 ->booleanNode('use_pager')
                     ->defaultValue(QueryBuilderFactoryInterface::DEFAULT_USE_PAGER)
