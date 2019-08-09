@@ -28,6 +28,11 @@ class QueryBuilder implements QueryBuilderInterface
     /**
      * @var bool
      */
+    private $distinct;
+
+    /**
+     * @var bool
+     */
     private $usePager;
 
     /**
@@ -99,6 +104,10 @@ class QueryBuilder implements QueryBuilderInterface
             ];
         }
 
+        if (null !== $this->distinct) {
+            $fetchParameters['distinct'] = $this->boolToString($this->distinct);
+        }
+
         $fetch = $this->queryDom->appendChild($this->createDomElement('fetch', $fetchParameters));
 
         $entity = $fetch->appendChild($this->createDomElement('entity', [
@@ -118,10 +127,16 @@ class QueryBuilder implements QueryBuilderInterface
      */
     public function getCountQuery($attribute = null): string
     {
-        $fetch = $this->queryDom->appendChild($this->createDomElement('fetch', [
+        $fetchParameters = [
             'mapping' => 'logical',
             'aggregate' => 'true',
-        ]));
+        ];
+
+        if (null !== $this->distinct) {
+            $fetchParameters['distinct'] = $this->boolToString($this->distinct);
+        }
+
+        $fetch = $this->queryDom->appendChild($this->createDomElement('fetch', $fetchParameters));
 
         $entity = $fetch->appendChild($this->createDomElement('entity', [
             'name' => $this->entity,
@@ -292,6 +307,13 @@ class QueryBuilder implements QueryBuilderInterface
     public function setEntity(string $entity): self
     {
         $this->entity = $entity;
+
+        return $this;
+    }
+
+    public function setDistinct(bool $distinct): self
+    {
+        $this->distinct = $distinct;
 
         return $this;
     }

@@ -36,6 +36,22 @@ class QueryBuilderTest extends AbstractQueryBuilderTest
             $queryBuilder->getCountQuery(null));
     }
 
+    public function testDistinctQuery()
+    {
+        $queryBuilder = $this->getQueryBuilder()
+            ->setDistinct(true);
+
+        $this->assertEquals('<fetch distinct="true"><entity name="user"><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery());
+
+        $this->assertEquals('<fetch mapping="logical" aggregate="true" distinct="true"><entity name="user"><attribute name="userid" alias="count" aggregate="count"/></entity></fetch>',
+            $queryBuilder->getCountQuery());
+
+        $queryBuilder->setDistinct(false);
+        $this->assertEquals('<fetch distinct="false"><entity name="user"><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery());
+    }
+
     public function testBuilds()
     {
         $queryBuilder = $this->getQueryBuilder()
