@@ -26,9 +26,24 @@ class QueryBuilder implements QueryBuilderInterface
     private $entity;
 
     /**
-     * @var bool
+     * @var bool|null
+     */
+    private $isCountQuery;
+
+    /**
+     * @var bool|null
      */
     private $distinct;
+
+    /**
+     * @var bool|null
+     */
+    private $aggregate;
+
+    /**
+     * @var string|null
+     */
+    private $mapping;
 
     /**
      * @var bool
@@ -80,6 +95,11 @@ class QueryBuilder implements QueryBuilderInterface
         $this->queryDom = new DOMDocument();
     }
 
+    /**
+     * @deprecated This method is deprecated and will be removed in 1.4.0. Use getters instead.
+     *
+     * @return array
+     */
     public function getQueryData(): array
     {
         return [
@@ -97,6 +117,14 @@ class QueryBuilder implements QueryBuilderInterface
             throw new QueryBuilderException('Entity name was not provided.');
         }
 
+        if ($this->isCountQuery) {
+            $this->usePager = false;
+            $this->mapping = 'logical';
+            $this->aggregate = true;
+            $this->attributeAliasPrefix = '';
+            $this->attributeAliasesAsNames = false;
+        }
+
         if ($this->usePager) {
             $fetchParameters = [
                 'count' => $this->itemsPerPage,
@@ -106,6 +134,14 @@ class QueryBuilder implements QueryBuilderInterface
 
         if (null !== $this->distinct) {
             $fetchParameters['distinct'] = $this->boolToString($this->distinct);
+        }
+
+        if (null !== $this->aggregate) {
+            $fetchParameters['aggregate'] = $this->boolToString($this->aggregate);
+        }
+
+        if (null !== $this->mapping) {
+            $fetchParameters['mapping'] = $this->mapping;
         }
 
         $fetch = $this->queryDom->appendChild($this->createDomElement('fetch', $fetchParameters));
@@ -124,6 +160,8 @@ class QueryBuilder implements QueryBuilderInterface
 
     /**
      * @param string|Attribute|null $attribute
+     *
+     * @deprecated This method is deprecated and will be removed in 1.4.0. Use ...->isCountQuery(true) instead.
      */
     public function getCountQuery($attribute = null): string
     {
@@ -147,12 +185,12 @@ class QueryBuilder implements QueryBuilderInterface
                 ->setAggregate('count')
                 ->setAlias('count')
             ;
-        }else if (is_string($attribute)) {
+        } elseif (is_string($attribute)) {
             $attribute = (new Attribute($attribute))
                 ->setAggregate('count')
                 ->setAlias('count')
             ;
-        } else if (!$attribute instanceof Attribute) {
+        } elseif (!$attribute instanceof Attribute) {
             throw new InvalidArgumentException('$attribute parameter should be a string or an Attribute object.');
         }
 
@@ -254,7 +292,7 @@ class QueryBuilder implements QueryBuilderInterface
 
             if (null === $attributeObject->getAlias() && $this->attributeAliasesAsNames) {
                 $attributeObject->setAlias($this->attributeAliasPrefix.$attributeObject->getName());
-            } else if ($attributeObject->getAlias() && $this->attributeAliasesAsNames) {
+            } elseif ($attributeObject->getAlias() && $this->attributeAliasesAsNames) {
                 $attributeObject->setAlias($this->attributeAliasPrefix.$attributeObject->getAlias());
             }
 
@@ -304,6 +342,11 @@ class QueryBuilder implements QueryBuilderInterface
         ]));
     }
 
+    public function getEntity(): ?string
+    {
+        return $this->entity;
+    }
+
     public function setEntity(string $entity): self
     {
         $this->entity = $entity;
@@ -311,9 +354,50 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    public function getDistinct(): ?bool
+    {
+        return $this->distinct;
+    }
+
     public function setDistinct(bool $distinct): self
     {
         $this->distinct = $distinct;
+
+        return $this;
+    }
+
+    public function getIsCountQuery(): ?bool
+    {
+        return $this->isCountQuery;
+    }
+
+    public function isCountQuery(bool $isCountQuery): self
+    {
+        $this->isCountQuery = $isCountQuery;
+
+        return $this;
+    }
+
+    public function getMapping(): ?string
+    {
+        return $this->mapping;
+    }
+
+    public function setMapping(string $mapping): self
+    {
+        $this->mapping = $mapping;
+
+        return $this;
+    }
+
+    public function getAggregate(): ?bool
+    {
+        return $this->aggregate;
+    }
+
+    public function setAggregate(bool $aggregate): self
+    {
+        $this->aggregate = $aggregate;
 
         return $this;
     }
@@ -330,11 +414,21 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    public function getCurrentPage(): ?int
+    {
+        return $this->currentPage;
+    }
+
     public function setCurrentPage(int $page): self
     {
         $this->currentPage = $page;
 
         return $this;
+    }
+
+    public function getItemsPerPage(): int
+    {
+        return $this->itemsPerPage;
     }
 
     public function setItemsPerPage(int $itemsCount): self
@@ -344,9 +438,38 @@ class QueryBuilder implements QueryBuilderInterface
         return $this;
     }
 
+    public function getUsePager(): bool
+    {
+        return $this->usePager;
+    }
+
     public function setUsePager(bool $usePager): self
     {
         $this->usePager = $usePager;
+
+        return $this;
+    }
+
+    public function getAttributeAliasesAsNames(): bool
+    {
+        return $this->attributeAliasesAsNames;
+    }
+
+    public function setAttributeAliasesAsNames(bool $attributeAliasesAsNames): self
+    {
+        $this->attributeAliasesAsNames = $attributeAliasesAsNames;
+
+        return $this;
+    }
+
+    public function getAttributeAliasPrefix(): ?string
+    {
+        return $this->attributeAliasPrefix;
+    }
+
+    public function setAttributeAliasPrefix(string $attributeAliasPrefix): self
+    {
+        $this->attributeAliasPrefix = $attributeAliasPrefix;
 
         return $this;
     }
@@ -417,20 +540,6 @@ class QueryBuilder implements QueryBuilderInterface
         }
 
         return $element;
-    }
-
-    public function setAttributeAliasesAsNames(bool $attributeAliasesAsNames): self
-    {
-        $this->attributeAliasesAsNames = $attributeAliasesAsNames;
-
-        return $this;
-    }
-
-    public function setAttributeAliasPrefix(string $attributeAliasPrefix): self
-    {
-        $this->attributeAliasPrefix = $attributeAliasPrefix;
-
-        return $this;
     }
 
     private function boolToString(bool $value)
