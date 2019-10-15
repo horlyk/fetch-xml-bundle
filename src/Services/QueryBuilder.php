@@ -231,7 +231,7 @@ class QueryBuilder implements QueryBuilderInterface
             $filterData['entityname'] = $filter->getEntityName();
         }
 
-        if (!is_array($filter->getValue())) {
+        if (!is_array($filter->getValue()) && $filter->getValue()) {
             $filterData['value'] = $filter->getValue();
         }
 

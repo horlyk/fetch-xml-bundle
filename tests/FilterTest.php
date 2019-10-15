@@ -52,10 +52,11 @@ class FilterTest extends AbstractQueryBuilderTest
 
         $filter
             ->setEntityName('testEntityName')
-            ->setValue('testValue')
+            ->setValue(null)
+            ->setAttribute('testEntityAttribute')
             ->setOperator("null");
 
-        $this->assertEquals('<fetch><entity name="user"><filter><condition attribute="name" operator="null" entityname="testEntityName" value="testValue"/></filter><all-attributes/></entity></fetch>',
+        $this->assertEquals('<fetch><entity name="user"><filter><condition attribute="testEntityAttribute" operator="null" entityname="testEntityName"/></filter><all-attributes/></entity></fetch>',
             $queryBuilder->getQuery());
     }
 }
