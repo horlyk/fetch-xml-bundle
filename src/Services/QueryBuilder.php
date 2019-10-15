@@ -227,6 +227,10 @@ class QueryBuilder implements QueryBuilderInterface
             'operator' => $filter->getOperator(),
         ];
 
+        if (null !== $filter->getEntityName()) {
+            $filterData['entityname'] = $filter->getEntityName();
+        }
+
         if (!is_array($filter->getValue())) {
             $filterData['value'] = $filter->getValue();
         }

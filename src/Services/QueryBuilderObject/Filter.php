@@ -23,15 +23,20 @@ class Filter
      * ToDo allow adding filter type
      */
     private $type;
+    /**
+     * @var string|null
+     */
+    private $entityName;
 
     /**
      * @param string|array $value
      */
-    public function __construct(string $attribute, $value, ?string $operator = null)
+    public function __construct(string $attribute, $value, ?string $operator = null, ?string $entityName = null)
     {
         $this->attribute = $attribute;
         $this->value = $value;
         $this->operator = $operator ?? $this->operator;
+        $this->entityName = $entityName;
     }
 
     public function getAttribute(): string
@@ -84,6 +89,18 @@ class Filter
     public function setType(?string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getEntityName(): ?string
+    {
+        return $this->entityName;
+    }
+
+    public function setEntityName(?string $entityName): self
+    {
+        $this->entityName = $entityName;
 
         return $this;
     }
