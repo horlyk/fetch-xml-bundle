@@ -101,7 +101,7 @@ class Relation
         return $this;
     }
 
-    public function getAttributes(): array
+    public function getAttributes(): ?array
     {
         return $this->attributes;
     }
