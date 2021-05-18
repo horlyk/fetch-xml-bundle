@@ -50,6 +50,11 @@ class Relation
     private $filters = [];
 
     /**
+     * @var string
+     */
+    private $alias;
+
+    /**
      * @deprecated v.1.0.1 $entityName no longer supports nullable value
      * @deprecated v.1.0.1 $to no longer supports nullable value
      */
@@ -187,5 +192,17 @@ class Relation
         $this->intersect = $intersect;
 
         return $this;
+    }
+
+    public function setAlias(string $alias): self
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->alias;
     }
 }
