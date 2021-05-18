@@ -30,9 +30,9 @@ class Relation
     private $intersect;
 
     /**
-     * @var array
+     * @var array|Attribute[]|null
      */
-    private $attributes = [];
+    private $attributes = null;
 
     /**
      * @var array|Sort[]
@@ -151,7 +151,7 @@ class Relation
         return $this;
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return $this->filters;
     }
