@@ -11,7 +11,7 @@ class FilterTest extends AbstractQueryBuilderTest
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder->addFilter(new Filter('name','','ne'));
 
-        $expected = '<fetch><entity name="user"><condition attribute="name" operator="ne" value=""/><all-attributes/></entity></fetch>';
+        $expected = '<fetch><entity name="user"><filter><condition attribute="name" operator="ne" value=""/></filter><all-attributes/></entity></fetch>';
         $this->assertEquals($expected, $queryBuilder->getQuery());
     }
 
