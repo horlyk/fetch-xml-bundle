@@ -30,7 +30,7 @@ class Relation
     private $intersect;
 
     /**
-     * @var array
+     * @var array|Attribute[]|null
      */
     private $attributes = [];
 
@@ -48,6 +48,11 @@ class Relation
      * @var array|Filter[]
      */
     private $filters = [];
+
+    /**
+     * @var string
+     */
+    private $alias;
 
     /**
      * @deprecated v.1.0.1 $entityName no longer supports nullable value
@@ -96,12 +101,12 @@ class Relation
         return $this;
     }
 
-    public function getAttributes(): array
+    public function getAttributes(): ?array
     {
         return $this->attributes;
     }
 
-    public function setAttributes(array $attributes): self
+    public function setAttributes(?array $attributes): self
     {
         $this->attributes = $attributes;
 
@@ -146,7 +151,7 @@ class Relation
         return $this;
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return $this->filters;
     }
@@ -187,5 +192,17 @@ class Relation
         $this->intersect = $intersect;
 
         return $this;
+    }
+
+    public function setAlias(string $alias): self
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->alias;
     }
 }

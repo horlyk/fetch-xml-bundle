@@ -25,8 +25,10 @@ class RelationTest extends AbstractQueryBuilderTest
         ];
 
         $queryBuilder->addRelation($data[0]);
-        $this->assertEquals('<fetch><entity name="user"><link-entity name="phone" to="user"/><all-attributes/></entity></fetch>',
-            $queryBuilder->getQuery());
+        $this->assertEquals(
+            '<fetch><entity name="user"><link-entity name="phone" to="user"/><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery()
+        );
 
         $queryBuilder->addRelation($data[1]);
         $this->assertEquals(
@@ -55,16 +57,19 @@ class RelationTest extends AbstractQueryBuilderTest
 
         $relation = (new Relation('address', 'user', 'user_id'))
             ->setJoinType('outer')
-            ->setIntersect(true)
-        ;
+            ->setIntersect(true);
 
         $queryBuilder->addRelation($relation);
-        $this->assertEquals('<fetch><entity name="user"><link-entity name="address" to="user" from="user_id" link-type="outer" intersect="true"/><all-attributes/></entity></fetch>',
-            $queryBuilder->getQuery());
+        $this->assertEquals(
+            '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id" link-type="outer" intersect="true"/><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery()
+        );
 
         $relation->setIntersect(false);
-        $this->assertEquals('<fetch><entity name="user"><link-entity name="address" to="user" from="user_id" link-type="outer" intersect="false"/><all-attributes/></entity></fetch>',
-            $queryBuilder->getQuery());
+        $this->assertEquals(
+            '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id" link-type="outer" intersect="false"/><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery()
+        );
 
         $queryBuilder->setRelations([]);
     }
@@ -78,12 +83,16 @@ class RelationTest extends AbstractQueryBuilderTest
 
         $relation->addFilter(new Filter('city', 'Babruysk'));
 
-        $this->assertEquals('<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><filter><condition attribute="city" operator="eq" value="Babruysk"/></filter></link-entity><all-attributes/></entity></fetch>',
-            $queryBuilder->getQuery());
+        $this->assertEquals(
+            '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><filter><condition attribute="city" operator="eq" value="Babruysk"/></filter></link-entity><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery()
+        );
 
         $relation->addFilter(new Filter('country', 'Belarus'));
-        $this->assertEquals('<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><filter><condition attribute="city" operator="eq" value="Babruysk"/><condition attribute="country" operator="eq" value="Belarus"/></filter></link-entity><all-attributes/></entity></fetch>',
-            $queryBuilder->getQuery());
+        $this->assertEquals(
+            '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><filter><condition attribute="city" operator="eq" value="Babruysk"/><condition attribute="country" operator="eq" value="Belarus"/></filter></link-entity><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery()
+        );
 
         $relation->setFilters([]);
 
@@ -99,12 +108,16 @@ class RelationTest extends AbstractQueryBuilderTest
 
         $relation->addSortOrder(new Sort('city'));
 
-        $this->assertEquals('<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><order attribute="city" descending="false"/></link-entity><all-attributes/></entity></fetch>',
-            $queryBuilder->getQuery());
+        $this->assertEquals(
+            '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><order attribute="city" descending="false"/></link-entity><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery()
+        );
 
         $relation->addSortOrder(new Sort('zip', 'desc'));
-        $this->assertEquals('<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><order attribute="city" descending="false"/><order attribute="zip" descending="true"/></link-entity><all-attributes/></entity></fetch>',
-            $queryBuilder->getQuery());
+        $this->assertEquals(
+            '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><order attribute="city" descending="false"/><order attribute="zip" descending="true"/></link-entity><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery()
+        );
 
         $relation->setSorts([]);
 
@@ -123,12 +136,62 @@ class RelationTest extends AbstractQueryBuilderTest
 
         $relation->addRelation($relationType);
 
-        $this->assertEquals('<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><link-entity name="type" to="address" from="address_id"/></link-entity><all-attributes/></entity></fetch>',
-            $queryBuilder->getQuery());
+        $this->assertEquals(
+            '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><link-entity name="type" to="address" from="address_id"/></link-entity><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery()
+        );
 
         $relation->setRelations([]);
         $this->assertEquals([], $relation->getRelations());
 
-        $this->assertEquals('<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"/><all-attributes/></entity></fetch>', $queryBuilder->getQuery());
+        $this->assertEquals(
+            '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"/><all-attributes/></entity></fetch>',
+            $queryBuilder->getQuery()
+        );
+    }
+
+    /**
+     * Relation with attributes=[] should render no attributes
+     *
+     * @throws \Horlyk\Bundle\FetchXmlBundle\Exception\QueryBuilderException
+     */
+    public function testRelationNoAttributes()
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        $relation = (new Relation('address', 'user', 'user_id'));
+        $relation->setAttributes([]);
+        $queryBuilder->addRelation($relation);
+
+        $expected = '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"/><all-attributes/></entity></fetch>';
+        $this->assertEquals($expected, $queryBuilder->getQuery());
+    }
+
+
+    /**
+     * Relation with attributes=null should render a all-attributes node
+     *
+     * @throws \Horlyk\Bundle\FetchXmlBundle\Exception\QueryBuilderException
+     */
+    public function testRelationAllAttributes()
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        $relation = (new Relation('address', 'user', 'user_id'));
+        $relation->setAttributes(null);
+        $queryBuilder->addRelation($relation);
+
+        $expected = '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><all-attributes/></link-entity><all-attributes/></entity></fetch>';
+        $this->assertEquals($expected, $queryBuilder->getQuery());
+    }
+
+    public function testRelationAlias()
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        $relation = (new Relation('address', 'user', 'user_id'));
+        $relation->setAttributes([]);
+        $relation->setAlias('abc');
+        $queryBuilder->addRelation($relation);
+
+        $expected = '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id" alias="abc"/><all-attributes/></entity></fetch>';
+        $this->assertEquals($expected, $queryBuilder->getQuery());
     }
 }

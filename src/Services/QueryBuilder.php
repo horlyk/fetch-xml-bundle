@@ -231,7 +231,7 @@ class QueryBuilder implements QueryBuilderInterface
             $filterData['entityname'] = $filter->getEntityName();
         }
 
-        if (!is_array($filter->getValue()) && $filter->getValue()) {
+        if (!is_array($filter->getValue()) && null !== $filter->getValue()) {
             $filterData['value'] = $filter->getValue();
         }
 
@@ -269,6 +269,10 @@ class QueryBuilder implements QueryBuilderInterface
 
         if (null !== $relation->getIntersect()) {
             $joinParameters['intersect'] = $this->boolToString($relation->getIntersect());
+        }
+
+        if (null !== $relation->getAlias()) {
+            $joinParameters['alias'] = $relation->getAlias();
         }
 
         $linkedRelation = $element->appendChild($this->createDomElement('link-entity', $joinParameters));
