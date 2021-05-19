@@ -32,7 +32,7 @@ class Relation
     /**
      * @var array|Attribute[]|null
      */
-    private $attributes = null;
+    private $attributes = [];
 
     /**
      * @var array|Sort[]
@@ -106,7 +106,7 @@ class Relation
         return $this->attributes;
     }
 
-    public function setAttributes(array $attributes): self
+    public function setAttributes(?array $attributes): self
     {
         $this->attributes = $attributes;
 
