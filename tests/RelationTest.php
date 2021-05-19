@@ -182,4 +182,16 @@ class RelationTest extends AbstractQueryBuilderTest
         $expected = '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id"><all-attributes/></link-entity><all-attributes/></entity></fetch>';
         $this->assertEquals($expected, $queryBuilder->getQuery());
     }
+
+    public function testRelationAlias()
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        $relation = (new Relation('address', 'user', 'user_id'));
+        $relation->setAttributes([]);
+        $relation->setAlias('abc');
+        $queryBuilder->addRelation($relation);
+
+        $expected = '<fetch><entity name="user"><link-entity name="address" to="user" from="user_id" alias="abc"/><all-attributes/></entity></fetch>';
+        $this->assertEquals($expected, $queryBuilder->getQuery());
+    }
 }
