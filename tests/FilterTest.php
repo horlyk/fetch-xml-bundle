@@ -6,6 +6,15 @@ use Horlyk\Bundle\FetchXmlBundle\Services\QueryBuilderObject\Filter;
 
 class FilterTest extends AbstractQueryBuilderTest
 {
+    public function testFilterEmptyValue()
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder->addFilter(new Filter('name','','ne'));
+
+        $expected = '<fetch><entity name="user"><condition attribute="name" operator="ne" value=""/><all-attributes/></entity></fetch>';
+        $this->assertEquals($expected, $queryBuilder->getQuery());
+    }
+
     public function testFilter()
     {
         $queryBuilder = $this->getQueryBuilder();
