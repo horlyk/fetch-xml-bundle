@@ -9,6 +9,7 @@ env:
   global:
     - PHPUNIT_FLAGS="-v"
     - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
+    - XDEBUG_MODE=coverage
 
 matrix:
   fast_finish: true
@@ -25,15 +26,11 @@ matrix:
       env: DEPENDENCIES="symfony/lts:^2"
     - php: 7.2.33
       env: DEPENDENCIES="symfony/lts:^3"
-    - php: 7.2.33
-      env: DEPENDENCIES="symfony/lts:^4"
 
     - php: 7.3.27
       env: DEPENDENCIES="symfony/lts:^2"
     - php: 7.3.27
       env: DEPENDENCIES="symfony/lts:^3"
-    - php: 7.3.27
-      env: DEPENDENCIES="symfony/lts:^4"
 
       # Latest commit to master
     - php: 7.2.33
